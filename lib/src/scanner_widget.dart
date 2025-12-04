@@ -9,10 +9,7 @@ import 'models/scanner_config.dart';
 class ScannerWidget extends StatefulWidget {
   final ScannerConfig config;
 
-  const ScannerWidget({
-    super.key,
-    this.config = const ScannerConfig(),
-  });
+  const ScannerWidget({super.key, this.config = const ScannerConfig()});
 
   @override
   State<ScannerWidget> createState() => _ScannerWidgetState();
@@ -83,14 +80,10 @@ class _ScannerWidgetState extends State<ScannerWidget> {
 
     try {
       final url = 'http://${_ipController.text}:${widget.config.port}';
-      // debugPrint("🔍 Trying to connect to: $url");
 
-      final response = await http.get(Uri.parse(url)).timeout(
-        Duration(seconds: widget.config.connectionTimeout),
-      );
-
-      // debugPrint("📡 Response status: ${response.statusCode}");
-      // debugPrint("📡 Response body: ${response.body}");
+      final response = await http
+          .get(Uri.parse(url))
+          .timeout(Duration(seconds: widget.config.connectionTimeout));
 
       if (response.statusCode == 200) {
         setState(() {
@@ -109,10 +102,10 @@ class _ScannerWidgetState extends State<ScannerWidget> {
         }
       }
     } on SocketException catch (_) {
-      // debugPrint("❌ Socket error: $e");
       setState(() {
         _isConnected = false;
-        _diagnosticMessage = '❌ Cannot reach receiver.\n\n'
+        _diagnosticMessage =
+            '❌ Cannot reach receiver.\n\n'
             'Possible issues:\n'
             '• Devices not on same WiFi\n'
             '• Router blocking device communication\n'
@@ -124,7 +117,6 @@ class _ScannerWidgetState extends State<ScannerWidget> {
         _showNetworkHelp();
       }
     } catch (e) {
-      // debugPrint("❌ Connection error: $e");
       setState(() {
         _isConnected = false;
         _diagnosticMessage = '❌ Connection failed: $e';
@@ -150,20 +142,20 @@ class _ScannerWidgetState extends State<ScannerWidget> {
               _buildHelpItem(
                 '1. Mobile Hotspot (Easiest)',
                 '• Enable hotspot on receiver device\n'
-                '• Connect scanner phone to hotspot\n'
-                '• The receiver IP will be: 192.168.43.1',
+                    '• Connect scanner phone to hotspot\n'
+                    '• The receiver IP will be: 192.168.43.1',
               ),
               const SizedBox(height: 12),
               _buildHelpItem(
                 '2. Same WiFi Network',
                 '• Ensure both devices on same WiFi\n'
-                '• Not one on WiFi and one on mobile data',
+                    '• Not one on WiFi and one on mobile data',
               ),
               const SizedBox(height: 12),
               _buildHelpItem(
                 '3. Disable Router Isolation',
                 '• Access router settings\n'
-                '• Disable "AP Isolation" or "Client Isolation"',
+                    '• Disable "AP Isolation" or "Client Isolation"',
               ),
             ],
           ),
@@ -194,16 +186,10 @@ class _ScannerWidgetState extends State<ScannerWidget> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         const SizedBox(height: 4),
-        Text(
-          description,
-          style: const TextStyle(fontSize: 12),
-        ),
+        Text(description, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -217,14 +203,12 @@ class _ScannerWidgetState extends State<ScannerWidget> {
     });
 
     try {
-      final url = 'http://${_ipController.text}:${widget.config.port}/scan?code=$code';
-      // debugPrint("📤 Sending barcode to: $url");
+      final url =
+          'http://${_ipController.text}:${widget.config.port}/scan?code=$code';
 
-      await http.get(Uri.parse(url)).timeout(
-        Duration(seconds: widget.config.scanTimeout),
-      );
-
-      // debugPrint("📥 Response: ${response.statusCode} - ${response.body}");
+      await http
+          .get(Uri.parse(url))
+          .timeout(Duration(seconds: widget.config.scanTimeout));
 
       if (mounted) {
         if (widget.config.requireScanConfirmation) {
@@ -244,7 +228,6 @@ class _ScannerWidgetState extends State<ScannerWidget> {
         }
       }
     } catch (e) {
-      // debugPrint("❌ Send error: $e");
       setState(() => _isConnected = false);
       if (mounted) {
         _showScanConfirmation(code, false, error: e.toString());
@@ -273,19 +256,13 @@ class _ScannerWidgetState extends State<ScannerWidget> {
           children: [
             Text(
               'Barcode: $code',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             if (!success && error != null) ...[
               const SizedBox(height: 12),
               Text(
                 'Error: $error',
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontSize: 12,
-                ),
+                style: const TextStyle(color: Colors.red, fontSize: 12),
               ),
             ],
           ],
@@ -319,7 +296,7 @@ class _ScannerWidgetState extends State<ScannerWidget> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Barcode Scanner'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.orangeAccent,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
@@ -334,98 +311,117 @@ class _ScannerWidgetState extends State<ScannerWidget> {
       ),
       body: Column(
         children: [
-          Card(
-            margin: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+          // Configuration section - shrinks when keyboard appears
+          Flexible(
+            fit: FlexFit.loose,
+            child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _ipController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: 'Receiver IP Address',
-                            border: const OutlineInputBorder(),
-                            hintText: '192.168.1.100',
-                            prefixIcon: Icon(
-                              _isConnected ? Icons.check_circle : Icons.error,
-                              color: _isConnected ? Colors.green : Colors.grey,
+                  Card(
+                    margin: const EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _ipController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    labelText: 'Receiver IP Address',
+                                    border: const OutlineInputBorder(),
+                                    hintText: '192.168.1.100',
+                                    prefixIcon: Icon(
+                                      _isConnected
+                                          ? Icons.check_circle
+                                          : Icons.error,
+                                      color: _isConnected
+                                          ? Colors.green
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                  onChanged: (_) =>
+                                      setState(() => _isConnected = false),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: _testConnection,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 20,
+                                  ),
+                                ),
+                                child: const Text('Test'),
+                              ),
+                            ],
+                          ),
+                          if (_diagnosticMessage.isNotEmpty &&
+                              widget.config.showDiagnostics) ...[
+                            const SizedBox(height: 12),
+                            Text(
+                              _diagnosticMessage,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: _isConnected
+                                    ? Colors.green
+                                    : Colors.orange[800],
+                              ),
                             ),
-                          ),
-                          onChanged: (_) => setState(() => _isConnected = false),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: _testConnection,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 20,
-                          ),
-                        ),
-                        child: const Text('Test'),
-                      ),
-                    ],
-                  ),
-                  if (_diagnosticMessage.isNotEmpty && widget.config.showDiagnostics) ...[
-                    const SizedBox(height: 12),
-                    Text(
-                      _diagnosticMessage,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: _isConnected ? Colors.green : Colors.orange[800],
+                          ],
+                        ],
                       ),
                     ),
-                  ],
+                  ),
+                  if (!_isConnected)
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info, color: Colors.orange),
+                          const SizedBox(width: 8),
+                          const Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Not Connected',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Test connection before scanning',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: _showNetworkHelp,
+                            child: const Text('Help'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
-          if (!_isConnected)
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.orange.shade100,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.info, color: Colors.orange),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Not Connected',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Test connection before scanning',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _showNetworkHelp,
-                    child: const Text('Help'),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 16),
+          // Scanner takes remaining space
           Expanded(
             child: Stack(
               children: [
@@ -442,7 +438,9 @@ class _ScannerWidgetState extends State<ScannerWidget> {
                     } else if (barcode != null && !_isConnected) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('⚠️ Not connected! Test connection first.'),
+                          content: Text(
+                            '⚠️ Not connected! Test connection first.',
+                          ),
                           backgroundColor: Colors.orange,
                         ),
                       );

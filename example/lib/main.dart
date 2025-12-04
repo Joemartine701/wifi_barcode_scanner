@@ -122,7 +122,7 @@ class _ReceiverPageState extends State<ReceiverPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Barcode Receiver'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.orangeAccent,
       ),
       body: Column(
         children: [
