@@ -56,7 +56,7 @@ class _ScannerWidgetState extends State<ScannerWidget> {
       setState(() {
         _diagnosticMessage = 'Scanner Phone IP: $myIP';
       });
-    } catch (e) {
+    } catch (_) {
       setState(() {
         _diagnosticMessage = 'Could not determine IP';
       });
@@ -83,14 +83,14 @@ class _ScannerWidgetState extends State<ScannerWidget> {
 
     try {
       final url = 'http://${_ipController.text}:${widget.config.port}';
-      debugPrint("🔍 Trying to connect to: $url");
+      // debugPrint("🔍 Trying to connect to: $url");
 
       final response = await http.get(Uri.parse(url)).timeout(
         Duration(seconds: widget.config.connectionTimeout),
       );
 
-      debugPrint("📡 Response status: ${response.statusCode}");
-      debugPrint("📡 Response body: ${response.body}");
+      // debugPrint("📡 Response status: ${response.statusCode}");
+      // debugPrint("📡 Response body: ${response.body}");
 
       if (response.statusCode == 200) {
         setState(() {
@@ -108,8 +108,8 @@ class _ScannerWidgetState extends State<ScannerWidget> {
           );
         }
       }
-    } on SocketException catch (e) {
-      debugPrint("❌ Socket error: $e");
+    } on SocketException catch (_) {
+      // debugPrint("❌ Socket error: $e");
       setState(() {
         _isConnected = false;
         _diagnosticMessage = '❌ Cannot reach receiver.\n\n'
@@ -124,7 +124,7 @@ class _ScannerWidgetState extends State<ScannerWidget> {
         _showNetworkHelp();
       }
     } catch (e) {
-      debugPrint("❌ Connection error: $e");
+      // debugPrint("❌ Connection error: $e");
       setState(() {
         _isConnected = false;
         _diagnosticMessage = '❌ Connection failed: $e';
@@ -218,13 +218,13 @@ class _ScannerWidgetState extends State<ScannerWidget> {
 
     try {
       final url = 'http://${_ipController.text}:${widget.config.port}/scan?code=$code';
-      debugPrint("📤 Sending barcode to: $url");
+      // debugPrint("📤 Sending barcode to: $url");
 
-      final response = await http.get(Uri.parse(url)).timeout(
+      await http.get(Uri.parse(url)).timeout(
         Duration(seconds: widget.config.scanTimeout),
       );
 
-      debugPrint("📥 Response: ${response.statusCode} - ${response.body}");
+      // debugPrint("📥 Response: ${response.statusCode} - ${response.body}");
 
       if (mounted) {
         if (widget.config.requireScanConfirmation) {
@@ -244,7 +244,7 @@ class _ScannerWidgetState extends State<ScannerWidget> {
         }
       }
     } catch (e) {
-      debugPrint("❌ Send error: $e");
+      // debugPrint("❌ Send error: $e");
       setState(() => _isConnected = false);
       if (mounted) {
         _showScanConfirmation(code, false, error: e.toString());
