@@ -19,11 +19,11 @@
 
 ## 📝 **File 9: `LICENSE`**
 
-Create `LICENSE` in the root directory (replace `[Joseph Martin]` with your actual name):
+Create `LICENSE` in the root directory (replace `[Engineer Joseph Martin]` with your actual name):
 ```
 MIT License
 
-Copyright (c) 2025 [Joseph Martin]
+Copyright (c) 2025 [Engineer Joseph Martin]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
