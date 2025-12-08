@@ -1,6 +1,6 @@
 name: wifi_barcode_scanner
 description: Wireless barcode scanning between devices over WiFi. Turn any phone into a barcode scanner for your POS or inventory app.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/Joemartine701/wifi_barcode_scanner
 repository: https://github.com/Joemartine701/wifi_barcode_scanner
 issue_tracker: https://github.com/Joemartine701/wifi_barcode_scanner/issues

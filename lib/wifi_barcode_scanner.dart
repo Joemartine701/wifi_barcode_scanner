@@ -1,5 +1,5 @@
 /// WiFi Barcode Scanner
-/// 
+///
 /// A Flutter package for wireless barcode scanning between devices over WiFi.
 /// Perfect for POS systems, inventory management, and warehouse operations.
 library;

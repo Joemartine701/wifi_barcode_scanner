@@ -44,11 +44,12 @@ class HomePage extends StatelessWidget {
               },
               icon: const Icon(Icons.tablet_mac, size: 40),
               label: const Text(
-                'Receiver (Tablet/POS)',
+                'Receiver (Device/POS)',
                 style: TextStyle(fontSize: 18),
               ),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
               ),
@@ -67,7 +68,8 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
               ),
@@ -142,7 +144,8 @@ class _ReceiverPageState extends State<ReceiverPage> {
                   const SizedBox(height: 4),
                   SelectableText(
                     'IP: $_serverIP:8080',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   const Text(

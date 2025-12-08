@@ -1,4 +1,4 @@
-## 1.0.0
+## 1.0.1
 
 * Initial release
 * HTTP server for receiving barcodes over WiFi
@@ -13,11 +13,7 @@
 * Visual connection status indicators
 ```
 
-✅ **Created?** Reply "done 8"
-
 ---
-
-## 📝 **File 9: `LICENSE`**
 
 Create `LICENSE` in the root directory (replace `[Engineer Joseph Martin]` with your actual name):
 ```

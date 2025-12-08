@@ -3,9 +3,7 @@ import 'package:wifi_barcode_scanner/wifi_barcode_scanner.dart';
 
 void main() {
   test('BarcodeHttpServer can be instantiated', () {
-    final server = BarcodeHttpServer(
-      onBarcodeReceived: (barcode) {},
-    );
+    final server = BarcodeHttpServer(onBarcodeReceived: (barcode) {});
     expect(server, isNotNull);
   });
 
@@ -21,7 +19,7 @@ void main() {
   test('ScannerConfig copyWith works correctly', () {
     const config = ScannerConfig(port: 8080);
     final modified = config.copyWith(port: 9090);
-    
+
     expect(modified.port, 9090);
     expect(modified.connectionTimeout, 5); // unchanged
   });
